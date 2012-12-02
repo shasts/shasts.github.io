@@ -5,6 +5,6 @@ comments: false
 categories: 
 ---
 Octopress has been setup. Now its time to say hello.
-{% codeblock hello_world.rb%}
+{% codeblock lang:ruby%}
 puts "Hello World"
 {% endcodeblock %}

@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Rants, Thoughts and Code</title>
+  <title>How to: Deploy to weblogic using maven - Rants, Thoughts and Code</title>
   <meta name="author" content="Shajahan Palayil">
 
   
-  <meta name="description" content="I was amazed by the magic that Twitter Bootstrap can bring into one application. If you are not a front end guy and want to develop one nice looking &hellip;">
+  <meta name="description" content="I have always liked Maven due to its simplicity and being so powerful. One of the recent requirement needed deploying to a remote Weblogic server. &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://shasts.github.com/">
+  <link rel="canonical" href="http://shasts.github.com/blog/2012/11/29/how-to-deploy-to-weblogic-using-maven/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -60,78 +60,12 @@
 </nav>
   <div id="main">
     <div id="content">
-      <div class="blog-index">
+      <div>
+<article class="hentry" role="article">
   
-  
-  
-    <article>
-      
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2012/12/02/twitter-bootstrap-and-jsf/">Twitter Bootstrap and JSF</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-12-02T00:37:00+01:00" pubdate data-updated="true">Dec 2<span>nd</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p> I was amazed by the magic that Twitter Bootstrap can bring into one application. If you are not a front end guy and want to develop one nice looking application, then Twitter Bootstrap is the way to go. The way it manges to arrange the layout and its basic components has always surprised me.</p>
-
-
-<p>I decided to give a try, to use Twitter Bootstrap on a JSF implementation. Of course there was no doubt about which implementation to use. With a rich set of components <a href="http://primefaces.org/">Primefaces</a> is one of my all time favorite.</p>
-
-
-
-
-<p>The code has been hosted on Github. One can checkout <a href="https://github.com/shasts/jsf-twitter-bootstrap">here</a>.</p>
-
-
-
-
-<p>The screen-shot of the application can be seen <a href="https://dl.dropbox.com/u/77538501/Screenshot%20from%202012-12-02%2000%3A52%3A32.png">here</a></p>
-
-
-
-
-<h5>Lessons Learned</h5>
-
-
-<ol>
-<li>The layout classes can be very well integrated to JSF.</li>
-<li>Some of the component styling would behave weird when integrated with Primefaces.</li>
-<li>Primefaces has its own twitter-bootstrap theme. If one would like to use the default bootstrap colors and not the Layout and other basic components then this is the best option.</li>
-<li>Don&#8217;t use your own jquery version. Primefaces has one.</li>
-</ol>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/11/29/how-to-deploy-to-weblogic-using-maven/">How to: Deploy to Weblogic Using Maven</a></h1>
+      <h1 class="entry-title">How to: Deploy to Weblogic Using Maven</h1>
     
     
       <p class="meta">
@@ -154,7 +88,7 @@
   </header>
 
 
-  <div class="entry-content"><p>
+<div class="entry-content"><p>
     I have always liked Maven due to its simplicity and being so powerful. One of the recent requirement needed deploying to a remote Weblogic server. Since I was using maven for dependency management and all other purposes maven is well known for, I decided to use it for remote deployment as well.
     Following are the steps one need to follow to make this tick.
 </p>
@@ -357,22 +291,16 @@ Start your Weblogic server and one can invoke following goal from project direct
 
 
 </div>
-  
-  
 
 
-    </article>
-  
-  
-    <article>
+  <footer>
+    <p class="meta">
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/11/29/hello-world/">Hello World</a></h1>
-    
-    
-      <p class="meta">
-        
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Shajahan Palayil</span></span>
+
+      
 
 
 
@@ -385,40 +313,46 @@ Start your Weblogic server and one can invoke following goal from project direct
 
 
 <time datetime="2012-11-29T00:00:00+01:00" pubdate data-updated="true">Nov 29<span>th</span>, 2012</time>
-        
-      </p>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/how-to/'>How to</a>, <a class='category' href='/blog/categories/maven/'>Maven</a>, <a class='category' href='/blog/categories/weblogic/'>Weblogic</a>
+  
+</span>
+
+
+    </p>
     
-  </header>
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://shasts.github.com/blog/2012/11/29/how-to-deploy-to-weblogic-using-maven/" data-via="" data-counturl="http://shasts.github.com/blog/2012/11/29/how-to-deploy-to-weblogic-using-maven/" >Tweet</a>
+  
+  
+  
+</div>
 
-
-  <div class="entry-content"><p>Octopress has been setup. Now its time to say hello.</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">puts</span> <span class="s2">&quot;Hello World&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2012/11/29/hello-world/" title="Previous Post: Hello World">&laquo; Hello World</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2012/12/02/twitter-bootstrap-and-jsf/" title="Next Post: Twitter Bootstrap and JSF">Twitter Bootstrap and JSF &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
 
 </div>
-  
-  
 
-
-    </article>
-  
-  <div class="pagination">
-    
-    <a href="/blog/archives">Blog Archives</a>
-    
-  </div>
-</div>
 <aside class="sidebar">
   
     <section>
-  <h1>Hi, I&#8217;m Shajahan</h1>  
+  <h1>Hi, I'm Shajahan</h1>  
   <p>
-  	On Github I&#8217;m <a href="http://github.com/shasts/">shasts</a><br/>
-  	On Linkedin I&#8217;m <a href="http://www.linkedin.com/in/shajahanpalayil">shajahanpalayil</a> <br/>
+  	On Github I'm <a href="http://github.com/shasts/">shasts</a><br/>
+  	On Linkedin I'm <a href="http://www.linkedin.com/in/shajahanpalayil">shajahanpalayil</a> <br/>
   	My home Page <a href="http://enthoughts.in">Home Page</a>
   </p>    
 </section><section>
@@ -447,6 +381,7 @@ Start your Weblogic server and one can invoke following goal from project direct
 
   
 </aside>
+
 
     </div>
   </div>

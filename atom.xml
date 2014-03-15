@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Rants, Thoughts and Code]]></title>
+  <link href="http://shasts.github.com/atom.xml" rel="self"/>
+  <link href="http://shasts.github.com/"/>
+  <updated>2012-12-08T13:45:54+01:00</updated>
+  <id>http://shasts.github.com/</id>
+  <author>
+    <name><![CDATA[Shajahan Palayil]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Twitter Bootstrap and JSF]]></title>
+    <link href="http://shasts.github.com/blog/2012/12/02/twitter-bootstrap-and-jsf/"/>
+    <updated>2012-12-02T00:37:00+01:00</updated>
+    <id>http://shasts.github.com/blog/2012/12/02/twitter-bootstrap-and-jsf</id>
+    <content type="html"><![CDATA[<p> I was amazed by the magic that Twitter Bootstrap can bring into one application. If you are not a front end guy and want to develop one nice looking application, then Twitter Bootstrap is the way to go. The way it manges to arrange the layout and its basic components has always surprised me.</p>
+
+
+<p>I decided to give a try, to use Twitter Bootstrap on a JSF implementation. Of course there was no doubt about which implementation to use. With a rich set of components <a href="http://primefaces.org/">Primefaces</a> is one of my all time favorite.</p>
+
+
+
+
+<p>The code has been hosted on Github. One can checkout <a href="https://github.com/shasts/jsf-twitter-bootstrap">here</a>.</p>
+
+
+
+
+<p>The screen-shot of the application can be seen <a href="https://dl.dropbox.com/u/77538501/Screenshot%20from%202012-12-02%2000%3A52%3A32.png">here</a></p>
+
+
+
+
+<h5>Lessons Learned</h5>
+
+
+<ol>
+<li>The layout classes can be very well integrated to JSF.</li>
+<li>Some of the component styling would behave weird when integrated with Primefaces.</li>
+<li>Primefaces has its own twitter-bootstrap theme. If one would like to use the default bootstrap colors and not the Layout and other basic components then this is the best option.</li>
+<li>Don&#8217;t use your own jquery version. Primefaces has one.</li>
+</ol>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[How to: Deploy to weblogic using maven]]></title>
+    <link href="http://shasts.github.com/blog/2012/11/29/how-to-deploy-to-weblogic-using-maven/"/>
+    <updated>2012-11-29T00:00:00+01:00</updated>
+    <id>http://shasts.github.com/blog/2012/11/29/how-to-deploy-to-weblogic-using-maven</id>
+    <content type="html"><![CDATA[<p>
+    I have always liked Maven due to its simplicity and being so powerful. One of the recent requirement needed deploying to a remote Weblogic server. Since I was using maven for dependency management and all other purposes maven is well known for, I decided to use it for remote deployment as well.
+    Following are the steps one need to follow to make this tick.
+</p>
+
+
+<h5> Step 1: Getting prerequisites ready</h5>
+
+
+<p>
+    1. A working maven installation. If you don&#8217;t have, get that <a href="http://maven.apache.org/download.html">here</a> <br/>
+    2. Weblogic server installation with a valid domain. Get that <a href="http://www.oracle.com/technetwork/middleware/ias/downloads/wls-main-097127.html">here</a>    
+</p>
+
+
+
+
+<h5> Step 2: Generate Weblogic maven plugin</h5>
+
+
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>cd to Oracle Middleware installation directory
+</span><span class='line'>For eg: cd MW_HOME/wlserver_XX.X/server/lib/
+</span><span class='line'>java -jar wljarbuilder.jar -profile weblogic-maven-plugin</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<h5> Step 3: Get the pom file to the weblogic lib directory</h5>
+
+
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>jar xvf MW_HOME/wlserver_XX.X/server/lib/weblogic-maven-plugin.jar META-INF/maven/com.oracle.weblogic/weblogic-maven-plugin/pom.xml</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<p>and then</p>
+
+
+<p></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>cp MW_HOME/wlserver_XX.X/server/lib/META-INF/maven/com.oracle.weblogic/weblogic-maven-plugin/pom.xml MW_HOME/wlserver_XX.X/server/lib</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<h5> Step 4: Configure the shortened command line goal</h5>
+
+
+<p>Add plugin groups to maven settings.xml (one can find this in conf directory of maven installation. It is apache-maven-3.0.4/conf/ for me) similar to below.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;pluginGroups>
+</span><span class='line'>    &lt;pluginGroup>com.oracle.weblogic&lt;/pluginGroup>
+</span><span class='line'>&lt;/pluginGroups></span></code></pre></td></tr></table></div></figure>
+
+
+<p>then edit the pom.xml in MW_HOME/wlserver_XX.X/server/lib/ similar to the below one.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+</span><span class='line'>  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+</span><span class='line'>  &lt;modelVersion>4.0.0&lt;/modelVersion>
+</span><span class='line'>  &lt;groupId>com.oracle.weblogic&lt;/groupId>
+</span><span class='line'>  &lt;artifactId>weblogic-maven-plugin&lt;/artifactId>
+</span><span class='line'>  &lt;packaging>maven-plugin&lt;/packaging>
+</span><span class='line'>  &lt;version>12.1.1.0&lt;/version>
+</span><span class='line'>  &lt;name>Maven Mojo Archetype&lt;/name>
+</span><span class='line'>  &lt;url>http://maven.apache.org&lt;/url>
+</span><span class='line'>  &lt;dependencies>
+</span><span class='line'>    &lt;dependency>
+</span><span class='line'>      &lt;groupId>org.apache.maven&lt;/groupId>
+</span><span class='line'>      &lt;artifactId>maven-plugin-api&lt;/artifactId>
+</span><span class='line'>      &lt;version>3.0.4&lt;/version>
+</span><span class='line'>    &lt;/dependency>
+</span><span class='line'> &lt;/dependencies>
+</span><span class='line'>&lt;/project></span></code></pre></td></tr></table></div></figure>
+
+
+<p>execute the mvn install from MW_HOME/wlserver_XX.X/server/lib/ directory</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>mvn install</span></code></pre></td></tr></table></div></figure>
+
+
+<p>configure the Weblogic maven plugin to be used in local maven installation</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>mvn install:install-file -Dfile=MW_HOME/wlserver_XX.X/server/lib/weblogic-maven-plugin.jar -DpomFile=pom.xml</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now the plugin is ready to use.</p>
+
+<h5>Step 5: Add build goal to your pom.xml</h5>
+
+
+<p>To configure the build goal edit your project pom.xml like the below.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;build>
+</span><span class='line'>  &lt;plugins>
+</span><span class='line'>      &lt;plugin>
+</span><span class='line'>          &lt;groupId>com.oracle.weblogic&lt;/groupId>
+</span><span class='line'>          &lt;artifactId>weblogic-maven-plugin&lt;/artifactId>
+</span><span class='line'>          &lt;version>12.1.1.0&lt;/version>
+</span><span class='line'>          &lt;configuration>
+</span><span class='line'>              &lt;!-- Provide the ip address of the remote server if remote deployment-->
+</span><span class='line'>              &lt;adminurl>t3://localhost:7001&lt;/adminurl>
+</span><span class='line'>              &lt;user>weblogic_admin_user_id&lt;/user>
+</span><span class='line'>              &lt;password>admin_password&lt;/password>
+</span><span class='line'>              &lt;upload>true&lt;/upload>
+</span><span class='line'>              &lt;action>deploy&lt;/action>
+</span><span class='line'>              &lt;!-- Change to true if remote deployment-->
+</span><span class='line'>              &lt;remote>false&lt;/remote>
+</span><span class='line'>              &lt;verbose>true&lt;/verbose>
+</span><span class='line'>              &lt;source>${project.build.directory}/${project.build.finalName}.${project.packaging}&lt;/source>
+</span><span class='line'>              &lt;name>${project.build.finalName}&lt;/name>
+</span><span class='line'>          &lt;/configuration>
+</span><span class='line'>          &lt;executions>
+</span><span class='line'>              &lt;execution>
+</span><span class='line'>                  &lt;phase>install&lt;/phase>
+</span><span class='line'>                  &lt;goals>
+</span><span class='line'>                      &lt;goal>deploy&lt;/goal>
+</span><span class='line'>                  &lt;/goals>
+</span><span class='line'>              &lt;/execution>
+</span><span class='line'>          &lt;/executions>
+</span><span class='line'>      &lt;/plugin>
+</span><span class='line'>  &lt;/plugins>
+</span><span class='line'>&lt;/build></span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<p>
+Bingo! You are done.
+<br/>
+Start your Weblogic server and one can invoke following goal from project directory.
+</p>
+
+
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>mvn clean install</span></code></pre></td></tr></table></div></figure>
+
+
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Hello World]]></title>
+    <link href="http://shasts.github.com/blog/2012/11/29/hello-world/"/>
+    <updated>2012-11-29T00:00:00+01:00</updated>
+    <id>http://shasts.github.com/blog/2012/11/29/hello-world</id>
+    <content type="html"><![CDATA[<p>Octopress has been setup. Now its time to say hello.</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">puts</span> <span class="s2">&quot;Hello World&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+]]></content>
+  </entry>
+  
+</feed>

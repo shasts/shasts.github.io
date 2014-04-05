@@ -4,7 +4,7 @@
   <title><![CDATA[Thoughts, Rant and Code]]></title>
   <link href="http://shasts.github.io/atom.xml" rel="self"/>
   <link href="http://shasts.github.io/"/>
-  <updated>2014-04-05T21:52:53+02:00</updated>
+  <updated>2014-04-05T21:55:11+02:00</updated>
   <id>http://shasts.github.io/</id>
   <author>
     <name><![CDATA[Shajahan Palayil]]></name>
@@ -18,7 +18,7 @@
     <link href="http://shasts.github.io/blog/2014/04/04/fizz-buzz-in-haskell/"/>
     <updated>2014-04-04T00:00:00+02:00</updated>
     <id>http://shasts.github.io/blog/2014/04/04/fizz-buzz-in-haskell</id>
-    <content type="html"><![CDATA[<p>Off late, I have been learning haskell programming language. Suddenly the thought of how <a href="http://en.wikipedia.org/wiki/Fizz_buzz">Fizz Buzz</a> would look like in haskell strike my mind.</p>
+    <content type="html"><![CDATA[<p>Off late, I have been learning Haskell programming language. Suddenly the thought of how <a href="http://en.wikipedia.org/wiki/Fizz_buzz">Fizz Buzz</a> would look like in Haskell strike my mind.</p>
 
 
 <p> After 5 minutes, a working version using guards and map was ready.</p>

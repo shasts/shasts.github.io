@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Maven | Rants, Thoughts and Code]]></title>
-  <link href="http://shasts.github.com/blog/categories/maven/atom.xml" rel="self"/>
-  <link href="http://shasts.github.com/"/>
-  <updated>2012-12-08T13:45:54+01:00</updated>
-  <id>http://shasts.github.com/</id>
+  <title><![CDATA[Category: Maven | Thoughts, Rant and Code]]></title>
+  <link href="http://shasts.github.io/blog/categories/maven/atom.xml" rel="self"/>
+  <link href="http://shasts.github.io/"/>
+  <updated>2014-04-05T21:50:31+02:00</updated>
+  <id>http://shasts.github.io/</id>
   <author>
     <name><![CDATA[Shajahan Palayil]]></name>
     
@@ -14,10 +14,10 @@
 
   
   <entry>
-    <title type="html"><![CDATA[How to: Deploy to weblogic using maven]]></title>
-    <link href="http://shasts.github.com/blog/2012/11/29/how-to-deploy-to-weblogic-using-maven/"/>
+    <title type="html"><![CDATA[How to: Deploy to Weblogic Using Maven]]></title>
+    <link href="http://shasts.github.io/blog/2012/11/29/how-to-deploy-to-weblogic-using-maven/"/>
     <updated>2012-11-29T00:00:00+01:00</updated>
-    <id>http://shasts.github.com/blog/2012/11/29/how-to-deploy-to-weblogic-using-maven</id>
+    <id>http://shasts.github.io/blog/2012/11/29/how-to-deploy-to-weblogic-using-maven</id>
     <content type="html"><![CDATA[<p>
     I have always liked Maven due to its simplicity and being so powerful. One of the recent requirement needed deploying to a remote Weblogic server. Since I was using maven for dependency management and all other purposes maven is well known for, I decided to use it for remote deployment as well.
     Following are the steps one need to follow to make this tick.
@@ -105,7 +105,7 @@
 </span><span class='line'>  &lt;packaging>maven-plugin&lt;/packaging>
 </span><span class='line'>  &lt;version>12.1.1.0&lt;/version>
 </span><span class='line'>  &lt;name>Maven Mojo Archetype&lt;/name>
-</span><span class='line'>  &lt;url>http://maven.apache.org&lt;/url>
+</span><span class='line'>  &lt;url>&lt;a href="http://maven.apache.org">http://maven.apache.org&lt;/a>&lt;/url>
 </span><span class='line'>  &lt;dependencies>&lt;/p>
 </span><span class='line'>
 </span><span class='line'>&lt;pre>&lt;code>&lt;dependency&gt;

@@ -2,10 +2,9 @@
 #      Main Configs       #
 # ----------------------- #
 
-url: http://yoursite.com
-title: My Octopress Blog
-subtitle: A blogging framework for hackers.
-author: Your Name
+url: http://shasts.github.io
+title: Thoughts, Rant and Code
+author: Shajahan Palayil
 simple_search: https://www.google.com/search
 description:
 

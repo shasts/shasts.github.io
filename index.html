@@ -101,8 +101,8 @@
 <p> One thing that intrigued me was the ability to get a <code>parallel stream</code> from a <code>spliterator</code>, which is available on available on all <code>Iterable</code>.</p>
 
 
-<p>Did some experiments with parallel streams and noticed some real permformance loss for some <code>Iterable</code>. 
-The reason is, <code>spliterator</code> decides how fast the paralle stream can be. The job of the <code>spliterator</code> is to decompose data into two parts, which can be procssed parallel.</p>
+<p>Did some experiments with parallel streams and noticed some real performance loss for some <code>Iterable</code>. 
+The reason is, <code>spliterator</code> decides how fast the parallel stream can be. The job of the <code>spliterator</code> is to decompose data into two parts, which can be processed parallel.</p>
 
 
 <p>For example, in case of a array backed list, <code>spliterator</code> can determine how data can be decomposed in to two parts finely before hand. However, in case of linked list, spliterator can never be precise about the length of the data set. So it splits the data into first and rest, which is as bad as it can get.</p>
@@ -163,7 +163,7 @@ The reason is, <code>spliterator</code> decides how fast the paralle stream can 
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>The provider interaface.</p>
+<p>The provider interface.</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -287,10 +287,10 @@ The reason is, <code>spliterator</code> decides how fast the paralle stream can 
 
 
 
-<p>From the result it quite visible that a <code>ParallelStream</code> over an ArrayList is the fastest one, with 15.549 ms/op. However, the benchmarking code has a flaw, where <code>IntStream</code> is constructed for each iteration, where as the actual collection for other streams are preconstructed and only stream is constructed for each iteration. But since that is not the purpose of benchmarking, I decided to ignore that. </p>
+<p>From the result it quite visible that a <code>ParallelStream</code> over an ArrayList is the fastest one, with 15.549 ms/op. However, the benchmarking code has a flaw, where <code>IntStream</code> is constructed for each iteration, where as the actual collection for other streams are pre-constructed and only stream is constructed for each iteration. But since that is not the purpose of benchmarking, I decided to ignore that. </p>
 
 
-<p>So one could consier <code>IntStream</code> and <code>Stream</code> over an <code>ArrayList</code> being equally fast. But stream over a <code>Set</code> is much slower compared to others.</p>
+<p>So one could consider <code>IntStream</code> and <code>Stream</code> over an <code>ArrayList</code> being equally fast. But stream over a <code>Set</code> is much slower compared to others.</p>
 
 </div>
   

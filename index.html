@@ -9,7 +9,7 @@
   <meta name="author" content="Shajahan Palayil">
 
   
-  <meta name="description" content="Off late, I have been learning Haskell programming language. Suddenly the thought of how Fizz Buzz would look like in Haskell strike my mind. After 5 &hellip;">
+  <meta name="description" content="I have been experimenting with Java 8 steams API and thinking about using it in projects I work on. Found the API to create a parallel stream from a &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -63,6 +63,241 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/11/15/curious-case-of-streams-in-java-8/">Curious Case of Streams in Java 8</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-11-15T22:26:11+01:00" pubdate data-updated="true">Nov 15<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I have been experimenting with Java 8 steams API and thinking about using it in projects I work on. Found the API to create a <code> parallel stream</code> from a <code>list</code> attractive utility for some computations.</p>
+
+
+<p>I have been also thinking of the overhead of a <code>parallel stream</code> for not so large datasets.</p>
+
+
+<p> One thing that intrigued me was the ability to get a <code>parallel stream</code> from a <code>spliterator</code>, which is available on available on all <code>Iterable</code>.</p>
+
+
+<p>Did some experiments with parallel streams and noticed some real permformance loss for some <code>Iterable</code>. 
+The reason is, <code>spliterator</code> decides how fast the paralle stream can be. The job of the <code>spliterator</code> is to decompose data into two parts, which can be procssed parallel.</p>
+
+
+<p>For example, in case of a array backed list, <code>spliterator</code> can determine how data can be decomposed in to two parts finely before hand. However, in case of linked list, spliterator can never be precise about the length of the data set. So it splits the data into first and rest, which is as bad as it can get.</p>
+
+
+<p>Below is the code used for benchmarking using <a href="http://openjdk.java.net/projects/code-tools/jmh/">JMH</a>.</p>
+
+<p>The test class</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ParallelStreamSupportTest</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nd">@Benchmark</span>
+</span><span class='line'>    <span class="nd">@BenchmarkMode</span><span class="o">(</span><span class="n">Mode</span><span class="o">.</span><span class="na">AverageTime</span><span class="o">)</span>
+</span><span class='line'>    <span class="nd">@OutputTimeUnit</span><span class="o">(</span><span class="n">TimeUnit</span><span class="o">.</span><span class="na">MILLISECONDS</span><span class="o">)</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">intStream</span><span class="o">(</span><span class="n">IntStreamProvider</span> <span class="n">provider</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">provider</span><span class="o">.</span><span class="na">getStream</span><span class="o">().</span><span class="na">mapToInt</span><span class="o">(</span><span class="n">i</span> <span class="o">-&gt;</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">2</span><span class="o">).</span><span class="na">sum</span><span class="o">();</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nd">@Benchmark</span>
+</span><span class='line'>    <span class="nd">@BenchmarkMode</span><span class="o">(</span><span class="n">Mode</span><span class="o">.</span><span class="na">AverageTime</span><span class="o">)</span>
+</span><span class='line'>    <span class="nd">@OutputTimeUnit</span><span class="o">(</span><span class="n">TimeUnit</span><span class="o">.</span><span class="na">MILLISECONDS</span><span class="o">)</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">streamFromContiguousSet</span><span class="o">(</span><span class="n">ContiguousStreamProvider</span> <span class="n">provider</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">provider</span><span class="o">.</span><span class="na">getStream</span><span class="o">().</span><span class="na">mapToInt</span><span class="o">(</span><span class="n">i</span> <span class="o">-&gt;</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">2</span><span class="o">).</span><span class="na">sum</span><span class="o">();</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nd">@Benchmark</span>
+</span><span class='line'>    <span class="nd">@BenchmarkMode</span><span class="o">(</span><span class="n">Mode</span><span class="o">.</span><span class="na">AverageTime</span><span class="o">)</span>
+</span><span class='line'>    <span class="nd">@OutputTimeUnit</span><span class="o">(</span><span class="n">TimeUnit</span><span class="o">.</span><span class="na">MILLISECONDS</span><span class="o">)</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">listIterator</span><span class="o">(</span><span class="n">StreamOverListProvider</span> <span class="n">provider</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">provider</span><span class="o">.</span><span class="na">getStream</span><span class="o">().</span><span class="na">mapToInt</span><span class="o">(</span><span class="n">i</span> <span class="o">-&gt;</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">2</span><span class="o">).</span><span class="na">sum</span><span class="o">();</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The provider interaface.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">StreamProvider</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">final</span> <span class="kd">static</span> <span class="kt">int</span> <span class="n">SIZE</span> <span class="o">=</span> <span class="mi">10000000</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">public</span> <span class="n">Stream</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="nf">getStream</span><span class="o">();</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Provider for <code>IntStream</code></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nd">@State</span><span class="o">(</span><span class="n">Scope</span><span class="o">.</span><span class="na">Thread</span><span class="o">)</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">IntStreamProvider</span> <span class="kd">implements</span> <span class="n">StreamProvider</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">public</span> <span class="n">Stream</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="nf">getStream</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">IntStream</span><span class="o">.</span><span class="na">rangeClosed</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="n">SIZE</span><span class="o">).</span><span class="na">boxed</span><span class="o">().</span><span class="na">parallel</span><span class="o">();</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Provider for a stream from <code>ArrayList</code></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nd">@State</span><span class="o">(</span><span class="n">Scope</span><span class="o">.</span><span class="na">Thread</span><span class="o">)</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">StreamOverListProvider</span> <span class="kd">implements</span> <span class="n">StreamProvider</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">private</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">integers</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">public</span> <span class="nf">StreamOverListProvider</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">Set</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">integer</span> <span class="o">=</span> <span class="n">ContiguousSet</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">Range</span><span class="o">.</span><span class="na">closed</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="n">SIZE</span><span class="o">),</span> <span class="n">DiscreteDomain</span><span class="o">.</span><span class="na">integers</span><span class="o">());</span>
+</span><span class='line'>        <span class="n">integers</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;&gt;();</span>
+</span><span class='line'>        <span class="n">integers</span><span class="o">.</span><span class="na">addAll</span><span class="o">(</span><span class="n">integer</span><span class="o">);</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">public</span> <span class="n">Stream</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="nf">getStream</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">integers</span><span class="o">.</span><span class="na">parallelStream</span><span class="o">();</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Provider for a stream from a <code>Set</code></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nd">@State</span><span class="o">(</span><span class="n">Scope</span><span class="o">.</span><span class="na">Thread</span><span class="o">)</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ContiguousStreamProvider</span> <span class="kd">implements</span> <span class="n">StreamProvider</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">private</span> <span class="n">Set</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">integers</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">public</span> <span class="nf">ContiguousStreamProvider</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">integers</span> <span class="o">=</span> <span class="n">ContiguousSet</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">Range</span><span class="o">.</span><span class="na">closed</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="n">SIZE</span><span class="o">),</span> <span class="n">DiscreteDomain</span><span class="o">.</span><span class="na">integers</span><span class="o">());</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">public</span> <span class="n">Stream</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="nf">getStream</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">StreamSupport</span><span class="o">.</span><span class="na">stream</span><span class="o">(</span><span class="n">integers</span><span class="o">.</span><span class="na">spliterator</span><span class="o">(),</span> <span class="kc">true</span><span class="o">);</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<p>Below is the benchmark result.</p>
+
+
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='haskell'><span class='line'><span class="kt">Benchmark</span>                                                <span class="kt">Mode</span>  <span class="kt">Samples</span>   <span class="kt">Score</span>   <span class="kt">Error</span>  <span class="kt">Units</span>
+</span><span class='line'><span class="nf">o</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="kt">ParallelStreamSupportTest</span><span class="o">.</span><span class="n">intStream</span>                  <span class="n">avgt</span>      <span class="mi">200</span>  <span class="mf">26.438</span> <span class="err">±</span> <span class="mf">0.404</span>  <span class="n">ms</span><span class="o">/</span><span class="n">op</span>
+</span><span class='line'><span class="nf">o</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="kt">ParallelStreamSupportTest</span><span class="o">.</span><span class="n">listIterator</span>               <span class="n">avgt</span>      <span class="mi">200</span>  <span class="mf">15.549</span> <span class="err">±</span> <span class="mf">0.355</span>  <span class="n">ms</span><span class="o">/</span><span class="n">op</span>
+</span><span class='line'><span class="nf">o</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="kt">ParallelStreamSupportTest</span><span class="o">.</span><span class="n">streamFromContiguousSet</span>    <span class="n">avgt</span>      <span class="mi">200</span>  <span class="mf">56.330</span> <span class="err">±</span> <span class="mf">0.309</span>  <span class="n">ms</span><span class="o">/</span><span class="n">op</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<p>From the result it quite visible that a <code>ParallelStream</code> over an ArrayList is the fastest one, with 15.549 ms/op. However, the benchmarking code has a flaw, where <code>IntStream</code> is constructed for each iteration, where as the actual collection for other streams are preconstructed and only stream is constructed for each iteration. But since that is not the purpose of benchmarking, I decided to ignore that. </p>
+
+
+<p>So one could consier <code>IntStream</code> and <code>Stream</code> over an <code>ArrayList</code> being equally fast. But stream over a <code>Set</code> is much slower compared to others.</p>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -502,6 +737,10 @@ Start your Weblogic server and one can invoke following goal from project direct
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/11/15/curious-case-of-streams-in-java-8/">Curious Case of Streams in Java 8</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2014/04/04/fizz-buzz-in-haskell/">Fizz Buzz in Haskell - Power of Filter and Map</a>
